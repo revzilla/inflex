@@ -2,6 +2,9 @@ defmodule Inflex.Pluralize do
   @moduledoc false
   @default true
 
+  @configured_singular Application.get_env(:inflex, :singular, [])
+  @configured_plural Application.get_env(:inflex, :plural, [])
+
   @uncountable  [
     "aircraft",
     "bellows",
@@ -73,7 +76,7 @@ defmodule Inflex.Pluralize do
     { ~r/^(phenomen)on/i, "\\1a"},
     ]
 
-  @singular @irregular ++ [
+  @singular @irregular ++ @configured_singular ++ [
     { ~r/(child)ren/i, "\\1" },
     { ~r/(wo|sea)men$/i, "\\1man" },
     { ~r/^(m|l)ice$/i, "\\1ouse" },
@@ -96,7 +99,7 @@ defmodule Inflex.Pluralize do
     { ~r/s$/i, "" },
     ]
 
-  @plural @plural_irregular ++ [
+  @plural @plural_irregular ++ @configured_plural ++ [
     { ~r/(child)$/i, "\\1ren" },
     { ~r/(m)an$/i, "\\1en" },
     { ~r/(m|l)ouse/i, "\\1ice" },
